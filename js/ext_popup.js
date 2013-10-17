@@ -125,6 +125,7 @@ $(document).ready(function ($) {
         $("#wext_user_current_loc").off("click");
         $("#wext_user_current_loc").on("click", function (e) {
             if (geoPosition.init()) {
+                wxtLocationNotFount = 1;
                 geoPosition.getCurrentPosition(wextShowPosition, geoError);
             }
         });
@@ -142,6 +143,10 @@ function geoError() {
 }
 
 function wextShowPosition(position) {
+    $("#wext_main_body").block({
+        message: '<span style="font-size:20px;font-family: lucida grande,tahoma,verdana,arial,sans-serif;">Please Wait...</span></h1>',
+    });
+
     //Check unit type stored in cookie
     var is_metrics = 0;
     if ($.cookie('wext_is_metrics') != undefined) {
