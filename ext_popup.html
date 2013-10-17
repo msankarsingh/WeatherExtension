@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <script type="text/javascript" src="js/jquery-1.10.2.js"></script>
+	<script type="text/javascript" src="js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="js/jquery.blockUI.js"></script>
+    <script type="text/javascript" src="js/geoPosition.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/ext_popup_min.js"></script>
+    <style type="text/css">
+        body {
+            width:735px;
+            font-family: 'lucida grande',tahoma,verdana,arial,sans-serif;
+            font-size: 12px;
+        }
+
+            body img {
+                cursor:pointer;
+            }
+
+        .temp_bold {
+            font-weight:bold;
+            font-size:14px;
+        }
+
+        .wext_locinfo_tbl{
+            width:100%;
+        }
+
+        .wext_locinfo_tbl td{
+            text-align:center;
+        }
+
+        .wext_locinfo_tbl td span{
+            font-size:20px;
+        }
+
+        .wext_cond_tbl {
+            width:100%;
+        }
+
+        .wext_cond_tbl td{
+            width:88px;
+            padding:0px;
+            border-right : 1px solid #EFEDEB;
+        }
+
+        .wext_cond_tbl td {
+            text-align:center;
+            vertical-align:text-top;
+        }
+
+        .wext_cond_tbl img{
+            width:64px;
+            height:64px;
+        }
+
+        .wxt_headtd td{
+            font-weight:bold;
+            font-size:14px;
+        }
+
+        .notdBorder{
+            border:0px !important;
+        }
+
+        #wxt_location_search {
+            border:1px solid #000000;
+            padding:5px;
+            width:200px;
+        }
+
+        .wxt_location_search_class {
+	        background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ededed), color-stop(1, #dfdfdf) );
+	        background:-moz-linear-gradient( center top, #ededed 5%, #dfdfdf 100% );
+	        filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ededed', endColorstr='#dfdfdf');
+	        background-color:#ededed;
+	        -webkit-border-top-left-radius:0px;
+	        -moz-border-radius-topleft:0px;
+	        border-top-left-radius:0px;
+	        -webkit-border-top-right-radius:0px;
+	        -moz-border-radius-topright:0px;
+	        border-top-right-radius:0px;
+	        -webkit-border-bottom-right-radius:0px;
+	        -moz-border-radius-bottomright:0px;
+	        border-bottom-right-radius:0px;
+	        -webkit-border-bottom-left-radius:0px;
+	        -moz-border-radius-bottomleft:0px;
+	        border-bottom-left-radius:0px;
+	        text-indent:-2.6px;
+	        border:1px solid #dcdcdc;
+	        display:inline-block;
+	        color:#000000;
+	        font-family:arial;
+	        font-size:12px;
+	        font-weight:bold;
+	        font-style:normal;
+	        height:30px;
+	        line-height:25px;
+	        width:65px;
+	        text-decoration:none;
+	        text-align:center;
+        }
+
+        .wxt_location_search_class:hover {
+	        background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #dfdfdf), color-stop(1, #ededed) );
+	        background:-moz-linear-gradient( center top, #dfdfdf 5%, #ededed 100% );
+	        filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#dfdfdf', endColorstr='#ededed');
+	        background-color:#dfdfdf;
+        }
+
+        .wxt_location_search_class:active {
+	        position:relative;
+	        top:1px;
+        }
+
+        #wext_location_div {
+            height:200px;
+            overflow-x:hidden;
+            overflow-y:auto;
+        }
+            #wext_location_div p {
+                padding:5px;
+            }
+
+            #wext_location_div p:hover {
+                cursor:pointer;
+                background-color:#EFEDEB;
+                text-decoration:underline;
+            }
+
+        #wext_recent_location_div {
+            height:200px;
+            overflow-x:hidden;
+            overflow-y:auto;
+            width:208px;
+        }
+
+            #wext_recent_location_div p{
+                padding:5px;
+            }
+
+            #wext_recent_location_div p:hover {
+                cursor:pointer;
+                background-color:#EFEDEB;
+                text-decoration:underline;
+            }
+
+
+        #wext_setting_tbl td {
+            vertical-align:top;
+            border-right : 1px solid #EFEDEB;
+        }
+
+            #wext_setting_tbl td table td {
+                border-right : 0px;
+            }
+
+        #last_wxt_td {
+            border-right : 0px !important;
+        }
+
+        #wext_location_finder table {
+            width:100%;
+        }
+            #wext_location_finder table td {
+                text-align:center;
+            }
+
+        #wext_user_current_loc:hover {
+            text-decoration:underline;
+            cursor:pointer;
+        }
+
+        #wext_setting_span:hover {
+            text-decoration:underline;
+            cursor:pointer;
+
+        }
+    </style>
+</head>
+<body id="wext_main_body"> 
+    <div id="wext_location_finder">
+        <table>
+            <tr class="wxt_headtd">
+                <td>
+                    Intial Location Setup
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <table style="width: 0;margin-left: 290px;">
+                        <tr>
+                            <td>
+                                <img src="image/wext_Location.svg" style="width:16px;height:16px"/>
+                            </td>
+                            <td>                                
+                                <span id="wext_user_current_loc">Find Current Location</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">or</td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="2">
+                                <span id="wext_setting_span">Setting Page</span>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+
+    <div id="wext_main_div">
+        <!-- Location Info -->   
+        <table class="wext_locinfo_tbl">
+            <tr>
+                <td>
+                    <img src="image/locMarker.svg" style="width:16px;height:16px"/>
+                    <span id="wext_loc_info_span"></span>
+                    <img src="image/wextSettings.svg" style="width:16px;height:16px;float:right" title="Settings" id="wext_setting_icon"/>
+                </td>
+            </tr>
+        </table>
+    
+        <br />
+
+        <!-- Condition Info -->   
+        <table class="wext_cond_tbl" cellspacing="0">
+            <tr class="wxt_headtd">
+                <td>Now</td>
+                <td id="wext_today_title_0"></td>
+                <td id="wext_today_title_1"></td>
+                <td id="wext_today_title_2"></td>
+                <td id="wext_today_title_3"></td>
+                <td id="wext_today_title_4"></td>
+                <td id="wext_today_title_5"></td>
+                <td id="wext_today_title_6" class="notdBorder"></td>
+            </tr>
+
+            <tr>
+                <td id="wext_now_icon"></td>
+                <td id="wext_today_icon_0"></td>
+                <td id="wext_today_icon_1"></td>
+                <td id="wext_today_icon_2"></td>
+                <td id="wext_today_icon_3"></td>
+                <td id="wext_today_icon_4"></td>
+                <td id="wext_today_icon_5"></td>
+                <td id="wext_today_icon_6" class="notdBorder"></td>
+            </tr>
+
+            <tr class="temp_bold">
+                <td id="wext_now_temp"></td>
+                <td id="wext_today_temp_0"></td>
+                <td id="wext_today_temp_1"></td>
+                <td id="wext_today_temp_2"></td>
+                <td id="wext_today_temp_3"></td>
+                <td id="wext_today_temp_4"></td>
+                <td id="wext_today_temp_5"></td>
+                <td id="wext_today_temp_6" class="notdBorder"></td>
+            </tr>
+
+            <tr>
+                <td id="wext_now_text"></td>
+                <td id="wext_today_text_0"></td>
+                <td id="wext_today_text_1"></td>
+                <td id="wext_today_text_2"></td>
+                <td id="wext_today_text_3"></td>
+                <td id="wext_today_text_4"></td>
+                <td id="wext_today_text_5"></td>
+                <td id="wext_today_text_6" class="notdBorder"></td>
+            </tr>
+        </table>
+    </div>
+
+    <div id="wext_location_setting_div">
+        <!-- Location Info -->   
+        <table class="wext_locinfo_tbl">
+            <tr>
+                <td>
+                    <span>Settings</span>
+                    <img src="image/wextcross.svg" style="width:16px;height:16px;float:right" title="Close" id="wext_close_setting"/>
+                </td>
+            </tr>
+        </table>
+
+        <table id="wext_setting_tbl">
+            <tr>
+                <td>
+                    <table>
+                        <tr>
+                            <td colspan="2">                            
+                                <span><b>Location Search:</b></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <!--Search Location -->
+                            <td>
+                                <input type="text" id="wxt_location_search"/>
+                            </td>
+                            <td>
+                                <button class="wxt_location_search_class" id="wxt_location_search_btn">Search</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <span style="font-size:10px">(Search Ex : Newyork, US)</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div id="wext_location_div">
+
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+
+                <td>
+                    <table>
+                        <tr>
+                            <td colspan="2">
+                                <span><b>Top 5 Recent Locations:</b></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div id="wext_recent_location_div">
+
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+
+                <td id="last_wxt_td">
+                    <table>
+                        <tr>
+                            <td colspan="2">
+                                <span><b>Temp Unit:</b></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="wxt_cel"><input type="radio" name="wxt_temp_rgrp" id="wxt_cel" />&#176C</label>
+                                <label for="wxt_f"><input type="radio" name="wxt_temp_rgrp" id="wxt_f" />&#176F</label>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        <br />
+        <table style="width:100%">
+            <tr>
+                <td style="text-align:right;font-size:11px" >
+                    Developed By <a href="http://www.linkedin.com/in/mageshsankarsingh" target="_blank"> Magesh S</a> using <a href="http://openweathermap.org/" target="_blank">OpenWeatherMap API</a>. Thanks <a target="_blank" href="https://twitter.com/adamwhitcroft">@adamwhitcroft</a> for free <a target="_blank" href="http://adamwhitcroft.com/climacons/">Climacons</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>
