@@ -1,12 +1,12 @@
 var wext_month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+var wxtLocationNotFount = 1;
 $(document).ready(function ($) {
 
     $("#wext_location_finder").hide();
     $("#wext_main_div").hide();
     $("#wext_location_setting_div").hide();
 
-    //Check Location Cookie
-    var wxtLocationNotFount = 1;
+    //Check Location Cookie    
     if ($.cookie('wext_city_info') == undefined) {
         wxtLocationNotFount = 0;
     }
@@ -125,7 +125,6 @@ $(document).ready(function ($) {
         $("#wext_user_current_loc").off("click");
         $("#wext_user_current_loc").on("click", function (e) {
             if (geoPosition.init()) {
-                wxtLocationNotFount = 1;
                 geoPosition.getCurrentPosition(wextShowPosition, geoError);
             }
         });
@@ -252,8 +251,9 @@ function getNewWextDetails(plocid, plocaName) {
     $.cookie('wext_city_info', JSON.stringify(wxt_temp_loc_arr), { expires: 365, path: '/' });
     $("#wext_location_div").html("");
     getCurrentCondition(plocid);
-    chrome.browserAction.setBadgeBackgroundColor({ color: "#000000" })
-    chrome.browserAction.setTitle({ title: new_wext_loc["Name"] })
+    chrome.browserAction.setBadgeBackgroundColor({ color: "#000000" });
+    chrome.browserAction.setTitle({ title: new_wext_loc["Name"] });
+    wxtLocationNotFount = 1;
 }
 
 //Get Current Condition
