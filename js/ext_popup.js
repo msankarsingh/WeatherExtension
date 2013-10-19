@@ -130,11 +130,13 @@ $(document).ready(function ($) {
         });
         return;
     }
-    $("#wext_main_div").show();
+
     wextPopulateLocInfo();
     wextPopulateCurrentCondition();
     wextPopulateTodayCondition();
     wextPopulateRecentLocationList();
+    $("#wext_main_div").show();
+    $("#wext_close_setting").focus();
 });
 
 function geoError() {

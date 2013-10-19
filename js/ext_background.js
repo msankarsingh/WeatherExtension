@@ -4,7 +4,7 @@ $(document).ready(function ($) {
     getCurrentCondition();
     setInterval(function () {
         getCurrentCondition();
-    }, 3600000);
+    }, 1800000);
 });
 
 //Get Current Condition
