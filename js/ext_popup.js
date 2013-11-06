@@ -220,7 +220,7 @@ function wextSearchLocation() {
         } else {
             $("#wext_location_div").html("");
             $('<p>', {
-                html: "<b>Sorry something went wrong. Please try again.</b>",
+                html: "<b>Location not found.</b>",
             }).appendTo("#wext_location_div");
             $("#wxt_location_search").val("");
         }

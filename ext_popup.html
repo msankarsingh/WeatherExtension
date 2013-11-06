@@ -9,8 +9,8 @@
     <script type="text/javascript" src="js/ext_popup.js"></script>
     <style type="text/css">
         body {
-            width:735px;
-            font-family: 'lucida grande',tahoma,verdana,arial,sans-serif;
+            width:775px;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
             font-size: 12px;
         }
 
@@ -25,10 +25,20 @@
 
         .wext_locinfo_tbl{
             width:100%;
+            border:3px solid #DEE2E5;
+            border-radius:5px;
+            background-color:#3D4340;
+            color:white;
         }
+
+            .wext_locinfo_tbl img {
+                -webkit-filter: invert(100%);  
+                margin-top:5px;
+            }
 
         .wext_locinfo_tbl td{
             text-align:center;
+            padding:5px;
         }
 
         .wext_locinfo_tbl td span{
@@ -36,12 +46,15 @@
         }
 
         .wext_cond_tbl {
+            margin-top:1px;
+            color:white;
             width:100%;
+            font-weight:bold;
         }
 
         .wext_cond_tbl td{
             width:88px;
-            padding:0px;
+            padding:2px;
             border-right : 1px solid #EFEDEB;
         }
 
@@ -53,6 +66,7 @@
         .wext_cond_tbl img{
             width:64px;
             height:64px;
+           -webkit-filter: invert(100%);  
         }
 
         .wxt_headtd td{
@@ -225,53 +239,50 @@
                 </td>
             </tr>
         </table>
-    
-        <br />
-
         <!-- Condition Info -->   
         <table class="wext_cond_tbl" cellspacing="0">
             <tr class="wxt_headtd">
-                <td>Now</td>
-                <td id="wext_today_title_0"></td>
-                <td id="wext_today_title_1"></td>
-                <td id="wext_today_title_2"></td>
-                <td id="wext_today_title_3"></td>
-                <td id="wext_today_title_4"></td>
-                <td id="wext_today_title_5"></td>
-                <td id="wext_today_title_6" class="notdBorder"></td>
+                <td style="background-color:#FAC458">Now</td>
+                <td id="wext_today_title_0" style="background-color:#FA965A"></td>
+                <td id="wext_today_title_1" style="background-color:#24B477"></td>
+                <td id="wext_today_title_2" style="background-color:#41A5E0"></td>
+                <td id="wext_today_title_3" style="background-color:#FAC458"></td>
+                <td id="wext_today_title_4" style="background-color:#FA965A"></td>
+                <td id="wext_today_title_5" style="background-color:#24B477"></td>
+                <td id="wext_today_title_6" style="background-color:#41A5E0" class="notdBorder"></td>
             </tr>
 
             <tr>
-                <td id="wext_now_icon"></td>
-                <td id="wext_today_icon_0"></td>
-                <td id="wext_today_icon_1"></td>
-                <td id="wext_today_icon_2"></td>
-                <td id="wext_today_icon_3"></td>
-                <td id="wext_today_icon_4"></td>
-                <td id="wext_today_icon_5"></td>
-                <td id="wext_today_icon_6" class="notdBorder"></td>
+                <td id="wext_now_icon" style="background-color:#FAC458"></td>
+                <td id="wext_today_icon_0" style="background-color:#FA965A"></td>
+                <td id="wext_today_icon_1" style="background-color:#24B477"></td>
+                <td id="wext_today_icon_2" style="background-color:#41A5E0"></td>
+                <td id="wext_today_icon_3" style="background-color:#FAC458"></td>
+                <td id="wext_today_icon_4" style="background-color:#FA965A"></td>
+                <td id="wext_today_icon_5" style="background-color:#24B477"></td>
+                <td id="wext_today_icon_6" style="background-color:#41A5E0" class="notdBorder"></td>
             </tr>
 
             <tr class="temp_bold">
-                <td id="wext_now_temp"></td>
-                <td id="wext_today_temp_0"></td>
-                <td id="wext_today_temp_1"></td>
-                <td id="wext_today_temp_2"></td>
-                <td id="wext_today_temp_3"></td>
-                <td id="wext_today_temp_4"></td>
-                <td id="wext_today_temp_5"></td>
-                <td id="wext_today_temp_6" class="notdBorder"></td>
+                <td id="wext_now_temp" style="background-color:#FAC458"></td>
+                <td id="wext_today_temp_0" style="background-color:#FA965A"></td>
+                <td id="wext_today_temp_1" style="background-color:#24B477"></td>
+                <td id="wext_today_temp_2" style="background-color:#41A5E0"></td>
+                <td id="wext_today_temp_3" style="background-color:#FAC458"></td>
+                <td id="wext_today_temp_4" style="background-color:#FA965A"></td>
+                <td id="wext_today_temp_5" style="background-color:#24B477"></td>
+                <td id="wext_today_temp_6" style="background-color:#41A5E0" class="notdBorder"></td>
             </tr>
 
             <tr>
-                <td id="wext_now_text"></td>
-                <td id="wext_today_text_0"></td>
-                <td id="wext_today_text_1"></td>
-                <td id="wext_today_text_2"></td>
-                <td id="wext_today_text_3"></td>
-                <td id="wext_today_text_4"></td>
-                <td id="wext_today_text_5"></td>
-                <td id="wext_today_text_6" class="notdBorder"></td>
+                <td id="wext_now_text" style="background-color:#FAC458"></td>
+                <td id="wext_today_text_0" style="background-color:#FA965A"></td>
+                <td id="wext_today_text_1" style="background-color:#24B477"></td>
+                <td id="wext_today_text_2" style="background-color:#41A5E0"></td>
+                <td id="wext_today_text_3" style="background-color:#FAC458"></td>
+                <td id="wext_today_text_4" style="background-color:#FA965A"></td>
+                <td id="wext_today_text_5" style="background-color:#24B477"></td>
+                <td id="wext_today_text_6" style="background-color:#41A5E0" class="notdBorder"></td>
             </tr>
         </table>
     </div>
