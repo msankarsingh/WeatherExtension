@@ -1,10 +1,12 @@
 var wext_month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+var wext_weekday = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
 var wxtLocationNotFount = 1;
 $(document).ready(function ($) {
 
     $("#wext_location_finder").hide();
     $("#wext_main_div").hide();
     $("#wext_location_setting_div").hide();
+    $("#chart_container").hide();
 
     //Check Location Cookie    
     if ($.cookie('wext_city_info') == undefined) {
@@ -57,6 +59,7 @@ $(document).ready(function ($) {
             wextPopulateCurrentCondition();
             wextPopulateTodayCondition();
             wextPopulateRecentLocationList();
+            wextDrawGraph();
             $("#wext_location_finder").hide();
             $("#wext_main_div").show();
             $("#wext_location_setting_div").hide();
@@ -70,6 +73,7 @@ $(document).ready(function ($) {
             wextPopulateCurrentCondition();
             wextPopulateTodayCondition();
             wextPopulateRecentLocationList();
+            wextDrawGraph();
             $("#wext_location_finder").hide();
             $("#wext_main_div").show();
             $("#wext_location_setting_div").hide();
@@ -135,6 +139,7 @@ $(document).ready(function ($) {
     wextPopulateCurrentCondition();
     wextPopulateTodayCondition();
     wextPopulateRecentLocationList();
+    wextDrawGraph();
     $("#wext_main_div").show();
     $("#wext_close_setting").focus();
 });
@@ -317,6 +322,7 @@ function getForecastData(cityId) {
             wextPopulateCurrentCondition();
             wextPopulateTodayCondition();
             wextPopulateRecentLocationList();
+            wextDrawGraph();
             $("#wext_location_finder").hide();
             $("#wext_main_div").show();
             $("#wext_location_setting_div").hide();
@@ -330,6 +336,15 @@ function wextPopulateTodayCondition() {
     if ($.cookie('wext_forecast_weather') == undefined) {
         return;
     }
+
+    //Metric Check
+    var is_metrics = 0;
+    if ($.cookie('wext_is_metrics') != undefined) {
+        is_metrics = parseInt($.cookie('wext_is_metrics'));
+    } else {
+        is_metrics = 0;
+    }
+
     var forecast_data = JSON.parse($.cookie('wext_forecast_weather'));
     for (var findx = 0; findx < forecast_data.list.length ; findx++) {
         var fd = forecast_data.list[findx];
@@ -338,7 +353,8 @@ function wextPopulateTodayCondition() {
         $("#wext_today_title_" + findx).html("");
         var dte = new Date(fd.dt * 1000);
         var timestr = wext_month[dte.getMonth()] + " " + dte.getDate();
-        $("#wext_today_title_" + findx).html(timestr);
+        var weekdaystr = wext_weekday[dte.getDay()];
+        $("#wext_today_title_" + findx).html(weekdaystr + "<br/>" + timestr);
 
         //Icon
         fd.weather[0].icon = fd.weather[0].icon.replace(/d+/, "d");
@@ -350,14 +366,6 @@ function wextPopulateTodayCondition() {
         //Text
         $("#wext_today_text_" + findx).html("");
         $("#wext_today_text_" + findx).html("<br/>" + toTitleCase(fd.weather[0].description));
-
-        //Metric Check
-        var is_metrics = 0;
-        if ($.cookie('wext_is_metrics') != undefined) {
-            is_metrics = parseInt($.cookie('wext_is_metrics'));
-        } else {
-            is_metrics = 0;
-        }
 
         //Temp 
         if (is_metrics == 1) {
@@ -426,8 +434,105 @@ function toTitleCase(str) {
     });
 }
 
-function getLocalTimeFromGMT(sTime) {
-    var dte = new Date(sTime);
-    dte.setTime(dte.getTime() - dte.getTimezoneOffset() * 60 * 1000);
-    alert(dte.toLocaleString());
+function wextDrawGraph() {
+    //Hide
+    $("#chart_container").hide();
+
+    //Check Cookie
+    if ($.cookie('wext_forecast_weather') == undefined) {
+        return;
+    }
+
+    //Chart Var
+    var yAxis_title_text = "Temperature (°F)";
+    var tooltip_valueSuffix = ' °F';
+    var xAxis_categories = new Array();
+    var series_high = new Array();
+    var series_low = new Array();
+
+    //Metric Check
+    var is_metrics = 0;
+    if ($.cookie('wext_is_metrics') != undefined) {
+        is_metrics = parseInt($.cookie('wext_is_metrics'));
+    } else {
+        is_metrics = 0;
+    }
+
+    //Get Forecast Details
+    var forecast_data = JSON.parse($.cookie('wext_forecast_weather'));
+    for (var findx = 0; findx < forecast_data.list.length ; findx++) {
+        var fd = forecast_data.list[findx];
+
+        //Date        
+        var dte = new Date(fd.dt * 1000);
+        var timestr = wext_month[dte.getMonth()] + " " + dte.getDate();
+        var weekdaystr = wext_weekday[dte.getDay()];
+        xAxis_categories.push(weekdaystr + "<br/>" + timestr);
+
+        //Temp 
+        if (is_metrics == 1) {
+            yAxis_title_text = "Temperature (°C)";
+            tooltip_valueSuffix = ' °C';
+            var cTempMaxVal = Math.round((Math.round(fd.temp.max) - 32) * (5 / 9));
+            var cTempMinVal = Math.round((Math.round(fd.temp.min) - 32) * (5 / 9));
+            series_high.push(cTempMaxVal);
+            series_low.push(cTempMinVal);
+        } else {
+            var fTempMaxVal = Math.round(fd.temp.max);
+            var fTempMinVal = Math.round(fd.temp.min);
+            series_high.push(fTempMaxVal);
+            series_low.push(fTempMinVal);
+        }
+    }
+
+    $('#chart_container').highcharts({
+        title: {
+            text: ''     
+        },
+        xAxis: {
+            categories: xAxis_categories
+        },
+        yAxis: {
+            title: {
+                text: yAxis_title_text
+            },
+            plotLines: [
+                {
+                    value: 0,
+                    width: 1,
+                    color: '#808080'
+                }
+            ]
+        },
+        plotOptions: {
+            series: {
+                animation: false
+            }
+        },
+        tooltip: {
+            crosshairs: true,
+            shared: true,
+            valueSuffix: tooltip_valueSuffix
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        series:
+            [
+                {
+                    type: 'spline',
+                    name: 'Hi',
+                    data: series_high
+                },
+                {
+                    type: 'spline',
+                    name: 'Low',
+                    data: series_low
+                }
+            ]
+    });
+    $("#chart_container").show();
 }
