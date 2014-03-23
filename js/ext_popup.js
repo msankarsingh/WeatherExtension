@@ -6,7 +6,7 @@ $(document).ready(function ($) {
     $("#wext_location_finder").hide();
     $("#wext_main_div").hide();
     $("#wext_location_setting_div").hide();
-    $("#chart_container").hide();
+    $("#chart_container_table").hide();
 
     //Check Location Cookie    
     if ($.cookie('wext_city_info') == undefined) {
@@ -80,6 +80,28 @@ $(document).ready(function ($) {
         }
     });
 
+    $("#wxt_graph_on").off("click");
+    $("#wxt_graph_on").on("click", function (e) {
+        $.cookie('wext_is_graph_on', 1, { expires: 365, path: '/' });
+        if (wxtLocationNotFount == 1) {            
+            $("#wext_location_finder").hide();
+            $("#wext_main_div").show();
+            $("#wext_location_setting_div").hide();
+            wextDrawGraph();
+        }
+    });
+
+    $("#wxt_graph_off").off("click");
+    $("#wxt_graph_off").on("click", function (e) {
+        $.cookie('wext_is_graph_on', 0, { expires: 365, path: '/' });
+        if (wxtLocationNotFount == 1) {            
+            $("#wext_location_finder").hide();
+            $("#wext_main_div").show();
+            $("#wext_location_setting_div").hide();
+            wextDrawGraph();
+        }
+    });
+
     $("#wext_setting_icon").off("click");
     $("#wext_setting_icon").on("click", function (e) {
         $("#wext_location_finder").hide();
@@ -111,6 +133,18 @@ $(document).ready(function ($) {
         $("#wxt_cel").attr('checked', 'checked');
     } else {
         $("#wxt_f").attr('checked', 'checked');
+    }
+
+    //Is Graph On
+    var is_graph_on = 0;
+    if ($.cookie('wext_is_graph_on') != undefined) {
+        is_graph_on = parseInt($.cookie('wext_is_graph_on'));
+    }
+
+    if (is_graph_on == 1) {
+        $("#wxt_graph_on").attr('checked', 'checked');
+    } else {
+        $("#wxt_graph_off").attr('checked', 'checked');
     }
 
     //If Location Not Found
@@ -435,8 +469,17 @@ function toTitleCase(str) {
 }
 
 function wextDrawGraph() {
-    //Hide
-    $("#chart_container").hide();
+
+    //Is Graph On
+    var is_graph_on = 0;
+    if ($.cookie('wext_is_graph_on') != undefined) {
+        is_graph_on = parseInt($.cookie('wext_is_graph_on'));
+    }
+    if (is_graph_on == 0) {
+        $("#chart_container_table").hide();
+        $("#chart_container_table_td").html("");
+        return;
+    }
 
     //Check Cookie
     if ($.cookie('wext_forecast_weather') == undefined) {
@@ -485,7 +528,8 @@ function wextDrawGraph() {
         }
     }
 
-    $('#chart_container').highcharts({
+    $("#chart_container_table_td").html('<div id="chart_container" style="min-width: 310px; height: 250px; margin: 0 auto"></div>');
+    $("#chart_container").highcharts({
         title: {
             text: ''     
         },
@@ -534,5 +578,5 @@ function wextDrawGraph() {
                 }
             ]
     });
-    $("#chart_container").show();
+    $("#chart_container_table").show();
 }

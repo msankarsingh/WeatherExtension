@@ -1,5 +1,8 @@
 $(document).ready(function ($) {
 
+    //Default Graph On
+    $.cookie('wext_is_graph_on', 1, { expires: 365, path: '/' });
+
     //Get Current Condition
     getCurrentCondition();
     setInterval(function () {

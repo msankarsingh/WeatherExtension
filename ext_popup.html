@@ -13,6 +13,8 @@
             width:775px;
             font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
             font-size: 12px;
+            overflow-x:hidden;
+            overflow-y:hidden; 
         }
 
             body img {
@@ -286,12 +288,10 @@
                 <td id="wext_today_text_5" style="background-color:#24B477"></td>
                 <td id="wext_today_text_6" style="background-color:#41A5E0" class="notdBorder"></td>
             </tr>
-        </table>
-        <br />
-        <table style="width:100%">
+        </table>        
+        <table style="width:100%" id="chart_container_table">
             <tr>
-                <td>
-                    <div id="chart_container" style="min-width: 310px; height: 250px; margin: 0 auto"></div>
+                <td id="chart_container_table_td">                    
                 </td>
             </tr>
         </table>
@@ -369,6 +369,24 @@
                             <td>
                                 <label for="wxt_cel"><input type="radio" name="wxt_temp_rgrp" id="wxt_cel" />&#176C</label>
                                 <label for="wxt_f"><input type="radio" name="wxt_temp_rgrp" id="wxt_f" />&#176F</label>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="2">
+                                <span>&nbsp;</span>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="2">
+                                <span><b>Graph:</b></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="wxt_graph_on"><input type="radio" name="wxt_graph_rgrp" id="wxt_graph_on" />On</label>
+                                <label for="wxt_graph_off"><input type="radio" name="wxt_graph_rgrp" id="wxt_graph_off" />Off</label>
                             </td>
                         </tr>
                     </table>
